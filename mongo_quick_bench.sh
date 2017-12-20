@@ -44,24 +44,30 @@ echo "maxtime $MAXTIME" >> "$PARAMS_FILE"
 echo "Provided benchmark parameters:"
 cat $PARAMS_FILE
 
-echo "Going to run the LOAD phase."
+echo "Saving stats to $STATSDIR directory."
+
 # Run the LOAD phase. The load phase generates a graph and stores it in the database.
+LOAD_PHASE_LOG="$STATS_SUBDIR/load-phase.log"
+echo "Going to run the LOAD phase. Saving load phase log to $LOAD_PHASE_LOG"
 ./bin/linkbench -c config/LinkConfigMongoDb.properties \
+				-csvstats "$STATS_SUBDIR/load-phase-stats.csv" \
+				-csvstream "$STATS_SUBDIR/load-phase-stream-stats.csv" \
+				-L $LOAD_PHASE_LOG \
 				-D host="$HOST" \
 				-D loaders=$LOADERS \
 				-D requesters=$REQUESTERS \
 				-D maxid1=$MAXID1 \
 				-D requests=$REQUESTS \
 				-D maxtime=$MAXTIME \
-				-csvstats "$STATS_SUBDIR/load-stats.csv" \
-				-csvstream "$STATS_SUBDIR/load-stream-stats.csv" \
 				-l #load phase flag.
 
-echo "Going to run the REQUEST phase."
 # Run the REQUEST phase. The request phase runs operations on the loaded graph.
+REQEST_PHASE_LOG="$STATS_SUBDIR/request-phase.log"
+echo "Going to run the REQUEST phase. Saving request phase log to $REQUEST_PHASE_LOG"
 ./bin/linkbench -c config/LinkConfigMongoDb.properties \
-				-csvstats "$STATS_SUBDIR/request-stats.csv" \
-				-csvstream "$STATS_SUBDIR/request-stream-stats.csv" \
+				-csvstats "$STATS_SUBDIR/request-phase-stats.csv" \
+				-csvstream "$STATS_SUBDIR/request-phase-stream-stats.csv" \
+				-L $REQUEST_PHASE_LOG \
 				-D host="$HOST" \
 				-D loaders=$LOADERS \
 				-D requesters=$REQUESTERS \

@@ -10,7 +10,7 @@ set -o errexit # Don't ignore failing commands.
 #
 # Usage:
 #
-#	./mongo_mini_bench.sh <loaders> <requesters> <maxid1> <maxtime> <warmup> <stats_directory>
+#	./mongo_quick_bench.sh <loaders> <requesters> <maxid1> <maxtime> <warmup> <stats_directory>
 #
 #
 
